@@ -1,0 +1,45 @@
+{
+  "name": "test-auto",
+  "version": "1.4.0",
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.5",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "czg": "^1.12.0",
+    "husky": "^9.1.7"
+  },
+  "scripts": {
+    "prepare-husky": "husky init",
+    "husky:add-commit-msg": "echo #!/bin/sh > .husky/commit-msg & echo npx --no-install commitlint --edit ${1} >> .husky/commit-msg",
+    "husky:setup": "npm run husky:add-commit-msg",
+    "changelog": "conventional-changelog -i CHANGELOG.md -p angular -s -r 0",
+    "release": "semantic-release --ci",
+    "release-dry": "semantic-release --dry-run",
+    "release:local": "semantic-release --no-ci",
+    "commit": "czg",
+    "prepare": "husky",
+    "version:patch": "npm version patch --no-git-tag-version ",
+    "version:minor": "npm version minor --no-git-tag-version ",
+    "version:major": "npm version major --no-git-tag-version ",
+    "release:preview": "semantic-release --dry-run --no-ci",
+    "help": "echo ===== npm scripts usage ===== & echo 1. prepare-husky: 初始化 husky 目录，用于 Git hooks & echo 2. husky:add-commit-msg: 创建或覆盖 commit-msg 钩子，校验 commit message 是否符合规范 & echo 3. husky:setup: 一次性设置 commit-msg 钩子 & echo 4. changelog: 根据 commit message 生成或更新 CHANGELOG.md 文件 & echo 5. release: 在 CI/CD 环境中自动发布版本（semantic-release 自动分析 commit message 决定 patch/minor/major，并更新 package.json/CHANGELOG.md、推送 Git tag 和 GitHub release） & echo 6. release-dry: semantic-release dry-run 模式，用于预览自动发布结果，不修改文件或推送 & echo 7. release:local: 在本地运行 semantic-release，用于测试发布流程，不依赖 CI/CD & echo 8. commit: 使用 czg 提交 commit，确保 commit message 符合规范 & echo 9. version:patch/minor/major: 手动 bump 版本，仅用于记忆如何更新版本，不会自动 commit 或 push，只更新本地 package.json.version & echo 10. release:preview: 本地 dry-run 预览 semantic-release 会生成的下一个版本和 release notes，不修改文件或推送 & echo 11. 版本号说明: CI/CD 中 semantic-release 会根据最新 Git tag 和 commit history 计算版本，package.json.version 仅用于本地参考，手动 bump 仅做记忆或测试，不影响 CI/CD 自动发布 & echo WARN: version:patch/minor/major 不会自动提交或推送，谨慎使用"
+},
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/czg",
+      "czConfig": "./config/cz.config.js"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "dependencies": {
+    "conventional-changelog-conventionalcommits": "^8.0.0"
+  }
+}
